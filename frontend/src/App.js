@@ -55,7 +55,7 @@ const closeDetail = () => {
 return ( 
 	<div className="App"> 
 	<header className="App-header"> 
-		<h1>Movie Mania</h1> 
+		<h1>Movie Streamer</h1> 
 	</header> 
 	<main> 
 		<Search searchInput={searchInput} search={search} /> 
