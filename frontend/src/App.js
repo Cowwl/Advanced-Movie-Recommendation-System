@@ -1,96 +1,83 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Search from "./components/Search";
-import Results from "./components/Results";
-import Detail from "./components/Detail";
-import { BrowserRouter as Router, Route, Routes, Link, Outlet } from "react-router-dom"; // Import Link and Outlet
-import Plot from "./Plot"; // Import the Plot component
-import Mood from "./Mood"; // Import the Mood component
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Plot from "./Plot";
+import Mood from "./Mood";
+import { Div, Text, Button, Container, Row, Col } from "atomize";
 import "./App.css";
 
 function App() {
   const [state, setState] = useState({
     s: "sherlock",
     results: [],
-    selected: {}
+    selected: {},
   });
 
   const apiurl = "https://www.omdbapi.com/?apikey=5426c86e";
 
-  const searchInput = (e) => {
-    let s = e.target.value;
-
-    setState((prevState) => {
-      return { ...prevState, s: s };
-    });
-  };
-
-  const search = (e) => {
-    if (e.key === "Enter") {
-      axios(apiurl + "&s=" + state.s).then(({ data }) => {
-        let results = data.Search;
-
-        setState((prevState) => {
-          return { ...prevState, results: results };
-        });
-      });
-    }
-  };
-
-  const openDetail = (id) => {
-    axios(apiurl + "&i=" + id).then(({ data }) => {
-      let result = data;
-
-      setState((prevState) => {
-        return { ...prevState, selected: result };
-      });
-    });
-  };
-
-  const closeDetail = () => {
-    setState((prevState) => {
-      return { ...prevState, selected: {} };
-    });
-  };
-
   return (
     <Router>
-      <div className="App">
-        <header className="App-header">
-          <h1>Movie Streamer</h1>
-        </header>
-        <nav>
-          <Link to="/" className="button">
-            Home
-          </Link>{"  "}
-          <Link to="/plot" className="button">
-            Plot
-          </Link>{"  "}
-          <Link to="/mood" className="button">
-            Mood
-          </Link>
-        </nav>
-        <main>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <div>
-                  <Search searchInput={searchInput} search={search} />
-                  <Results results={state.results} openDetail={openDetail} />
-                  {typeof state.selected.Title !== "undefined" ? (
-                    <Detail selected={state.selected} closeDetail={closeDetail} />
-                  ) : (
-                    false
-                  )}
-                </div>
-              }
-            />
-            <Route path="/plot" element={<Plot results={state.results} />} />
-            <Route path="/mood" element={<Mood results={state.results} />} />
-          </Routes>
-        </main>
-      </div>
+      <Div bg="gray200" minH="100vh">
+        <Container>
+          <Row>
+            <Col>
+              <Text tag="h1" textSize="display2" m={{ y: "1rem" }} textAlign="center">
+                Movie Streamer
+              </Text>
+            </Col>
+          </Row>
+          <Row>
+            <Col size={4}>
+              <Button
+                tag="a"
+                href="/"
+                textColor="white"
+                hoverTextColor="black"
+                bg="info700"
+                hoverBg="info300"
+                rounded="circle"
+                p={{ r: "1.5rem", l: "1.5rem" }}
+              >
+                Home
+              </Button>
+            </Col>
+            <Col size={4}>
+              <Button
+                tag="a"
+                href="/plot"
+                textColor="white"
+                hoverTextColor="black"
+                bg="info700"
+                hoverBg="info300"
+                rounded="circle"
+                p={{ r: "1.5rem", l: "1.5rem" }}
+              >
+                Plot
+              </Button>
+            </Col>
+            <Col size={4}>
+              <Button
+                tag="a"
+                href="/mood"
+                textColor="white"
+                hoverTextColor="black"
+                bg="info700"
+                hoverBg="info300"
+                rounded="circle"
+                p={{ r: "1.5rem", l: "1.5rem" }}
+              >
+                Mood
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+
+        <Routes>
+          <Route path="/" element={<div>ok</div>} />
+          <Route path="/plot" element={<Plot results={state.results} />} />
+          <Route path="/mood" element={<Mood results={state.results} />} />
+        </Routes>
+      </Div>
     </Router>
   );
 }

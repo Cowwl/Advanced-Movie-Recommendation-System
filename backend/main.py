@@ -3,8 +3,17 @@ from fastapi.responses import JSONResponse
 from fastapi import FastAPI
 from plot_main import plot_app
 from mood_main import mood_app
+from fastapi.middleware.cors import CORSMiddleware
 
 main_app = FastAPI()
+# Allow CORS for all origins
+main_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @main_app.get("/")
 def read_root():

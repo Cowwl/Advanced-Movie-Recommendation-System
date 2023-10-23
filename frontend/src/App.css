@@ -89,7 +89,7 @@
   
   .results .result h3:hover { 
   background: #fff; 
-  color: #223343; 
+  color: #ffffff; 
   box-shadow: 0 0 8px 3px #4484c4; 
   } 
   
@@ -171,7 +171,7 @@
   margin-right: 2rem; 
   margin-bottom: 1rem; */
   font-weight: 700; 
-  background: #223343; 
+  background: #ffffff; 
   color: #fff; 
   /* border-radius: 8px; */
   border: none; 
@@ -190,11 +190,11 @@
   } 
   
   .detail .content button:hover { 
-  background: #4484c4; 
+  background: #ffffff; 
   } 
   
   .detail .content .about .close:hover { 
-  background: #223343; 
+  background: #ffffff; 
   } 
   
   @media screen and (max-width: 1015px) { 

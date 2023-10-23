@@ -1,70 +1,92 @@
 import React, { useEffect, useState } from "react";
-import Search from "./components/Search";
-import Results from "./components/Results";
 import axios from "axios";
+import { Div, Button, Input, Text, Image, Container, Row, Col } from "atomize";
 
 function Plot({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
-  const [searchInput, setSearchInput] = useState(""); // State to store the user's input
+  const [searchInput, setSearchInput] = useState("");
 
-  const handleSearch = () => {
-    // Send a POST request to the backend
+  const handleSearch = (input) => {
     axios
-      .post("http://localhost:8000/search-plot/", { user_input: searchInput })
+      .post("http://localhost:8000/plot/search-plot?user_input=" + input)
       .then((response) => {
-        // Handle the response data here
-        const movieDetailsData = response.data;
-        setMovieDetails(movieDetailsData);
+        const imdbIDs = response.data.map((movie) => movie.imdb_id);
+        fetchMovieDetails(imdbIDs);
       })
       .catch((error) => {
-        // Handle errors here
-        console.error("Error fetching movie details:", error);
+        console.error("Error fetching search results:", error);
       });
   };
 
+  const fetchMovieDetails = async (imdbIDs) => {
+    try {
+      const movieDetailsPromises = imdbIDs.map((id) => {
+        return axios.get(`https://www.omdbapi.com/?i=${id}&apikey=5426c86e`);
+      });
+
+      const movieDetailsResponses = await Promise.all(movieDetailsPromises);
+      const movieDetailsData = movieDetailsResponses.map(
+        (response) => response.data
+      );
+      setMovieDetails(movieDetailsData);
+    } catch (error) {
+      console.error("Error fetching movie details:", error);
+    }
+  };
+
   useEffect(() => {
-    // Fetch movie details for the initial results
-    const fetchMovieDetails = async () => {
-      try {
-        const movieDetailsPromises = results.map((result) => {
-          const imdb_id = result.imdb_id;
-          return axios.get(`https://www.omdbapi.com/?i=${imdb_id}&apikey=5426c86e`);
-        });
-
-        const movieDetailsResponses = await Promise.all(movieDetailsPromises);
-        const movieDetailsData = movieDetailsResponses.map((response) => response.data);
-        setMovieDetails(movieDetailsData);
-      } catch (error) {
-        console.error("Error fetching movie details:", error);
-      }
-    };
-
-    fetchMovieDetails();
+    const imdbIDs = results.map((result) => result.imdb_id);
+    fetchMovieDetails(imdbIDs);
   }, [results]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {/* <h1>Movie Streamer</h1> */}
-      </header>
-      <main>
-        <Search
-          results={results}
-          onSearch={(input) => {
-            setSearchInput(input);
-          }}
-          onSearchSubmit={handleSearch} // Handle the search on submit
-        />
-        <Results results={results} />
-        {movieDetails.map((movie, index) => (
-          <div key={index}>
-            <h2>{movie.Title}</h2>
-            <p>Plot: {movie.Plot}</p>
-            {/* Add more movie details as needed */}
-          </div>
-        ))}
-      </main>
-    </div>
+    <Container className="App">
+      <Div>
+        <Div d="flex" justify="center" w="auto" m={{ b: "1rem", t: "1rem" }}>
+          <Input
+            placeholder="Search"
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                handleSearch(searchInput);
+              }
+            }}
+            m={{ r: "0.5rem" }}
+            w="40rem"
+          />
+          <Button onClick={() => handleSearch(searchInput)}>Search</Button>
+        </Div>
+        {movieDetails.length > 0 && (
+          <Row>
+            {movieDetails.map((movie) => (
+              <Col size={{ xs: 12, md: 6, lg: 4 }} key={movie.imdbID}>
+                <Div
+                  className="card"
+                  p="1rem"
+                  m={{ b: "1rem" }}
+                  shadow="3"
+                  rounded="lg"
+                >
+                  <Image
+                    src={movie.Poster}
+                    alt={movie.Title}
+                    h="30rem"
+                    w="100%"
+                    rounded="md"
+                  />
+                  <Text tag="h2" textSize="title" m={{ y: "0.5rem" }}>
+                    {movie.Title}
+                  </Text>
+                  <Text textSize="body" textWeight="500">
+                    Plot: {movie.Plot}
+                  </Text>
+                </Div>
+              </Col>
+            ))}
+          </Row>
+        )}
+      </Div>
+    </Container>
   );
 }
 
