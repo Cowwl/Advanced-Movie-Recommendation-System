@@ -9,7 +9,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from fastapi.responses import JSONResponse
 from typing import List
 
-app = FastAPI()
+mood_app = FastAPI()
 
 # Load the data and precompute the necessary values
 df = pd.read_csv("movies_metadata.csv")
@@ -114,13 +114,13 @@ print("Data preprocessing and calculations complete!")
 
 
 
-@app.get("/history/")
+@mood_app.get("/history/")
 async def get_history():
     movies = [movie for movie in user_history.to_dict("records")]
     return JSONResponse(content=movies)
 
 
-@app.get("/recommendations/")
+@mood_app.get("/recommendations/")
 async def get_recommendations():
     top_10_recommendations = recommend_movies(user_history, sample_movies)
     # Convert the similarity column to a float to avoid JSON serialization issues
@@ -130,7 +130,7 @@ async def get_recommendations():
     return JSONResponse(content=movies)
 
 
-@app.post("/search/")
+@mood_app.post("/search/")
 async def search_movies(user_input: str):
     mood_prompt_embedding = calculate_embeddings([user_input])
     sample_movies["search_similarity"] = [

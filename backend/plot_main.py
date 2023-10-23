@@ -8,7 +8,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 
 # Initialize FastAPI app
-app = FastAPI()
+plot_app = FastAPI()
 
 # Load the SentenceTransformer model
 model = SentenceTransformer("all-mpnet-base-v2")
@@ -140,7 +140,7 @@ user_history_data = [
 
 
 # Endpoint to recommend movies based on user history
-@app.get("/recommend-movies-plot")
+@plot_app.get("/recommend-movies-plot")
 async def recommend_movies_endpoint():
     top_10_recommendations = recommend_movies(user_history_data)
     top_10_recommendations = top_10_recommendations[
@@ -172,7 +172,7 @@ def search_movies(plot_prompt_embedding, movie_overview_embeddings):
 
 
 # Endpoint to search for movies based on plot similarity
-@app.post("/search-plot/")
+@plot_app.post("/search-plot/")
 async def search_movies_endpoint(user_input: str):
     plot_prompt_embedding = get_sbert_embeddings(user_input, model, device)
     search_results = search_movies(plot_prompt_embedding, movie_overview_embeddings)
