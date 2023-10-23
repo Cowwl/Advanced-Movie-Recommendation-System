@@ -1,2 +1,4 @@
 vemv/
 env/
+movies_metadata.csv
+backend/top_1000_movie_reviews.csv
