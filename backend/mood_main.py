@@ -15,7 +15,7 @@ app = FastAPI()
 df = pd.read_csv("movies_metadata.csv")
 reviews = pd.read_csv("top_1000_movie_reviews.csv")
 df = df.merge(reviews, on="imdb_id")
-df_mystery = df[df["genres"].str.contains("Action", na=False)]
+df_mystery = df[df["genres"].str.contains("Thriller", na=False)]
 top_10_mystery_movies = df_mystery.sample(10, random_state=42)
 user_history = top_10_mystery_movies[
     ["title", "overview", "imdb_id", "genres"]
@@ -113,9 +113,6 @@ sample_movies["similarity"] = [
 print("Data preprocessing and calculations complete!")
 
 
-class UserHistory(BaseModel):
-    mood_prompt: str
-
 
 @app.get("/history/")
 async def get_history():
@@ -126,19 +123,23 @@ async def get_history():
 @app.get("/recommendations/")
 async def get_recommendations():
     top_10_recommendations = recommend_movies(user_history, sample_movies)
-    top_10_recommendations = top_10_recommendations[['title', 'imdb_id', 'overview', 'similarity']]
+    # Convert the similarity column to a float to avoid JSON serialization issues
+    top_10_recommendations["similarity"] = top_10_recommendations["similarity"].astype(float)
+    top_10_recommendations = top_10_recommendations[['title', 'imdb_id', 'overview', 'similarity', 'genres']]
     movies = [movie for movie in top_10_recommendations.to_dict("records")]
     return JSONResponse(content=movies)
 
 
 @app.post("/search/")
-async def search_movies(user_input: UserHistory):
-    mood_prompt_embedding = calculate_embeddings([user_input.mood_prompt])
+async def search_movies(user_input: str):
+    mood_prompt_embedding = calculate_embeddings([user_input])
     sample_movies["search_similarity"] = [
         cosine_similarity(mood_prompt_embedding.cpu(), movie_score.unsqueeze(0))
         for movie_score in movie_scores_tensor
     ]
     search_results = search(sample_movies)
-    search_results = search_results[['title', 'imdb_id', 'overview', 'search_similarity']]
+    # Convert the similarity column to a float to avoid JSON serialization issues
+    search_results["search_similarity"] = search_results["search_similarity"].astype(float)
+    search_results = search_results[['title', 'imdb_id', 'overview', 'search_similarity', 'genres']]
     movies = [movie for movie in search_results.to_dict("records")]
     return JSONResponse(content=movies)
