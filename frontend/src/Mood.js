@@ -2,9 +2,36 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Div, Button, Input, Text, Image, Container, Row, Col } from "atomize";
 
-function Plot({ results }) {
+function Mood({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); // Initialize the Web Speech API recognition object
+
+  // Initialize the recognition settings
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  let silenceTimer = null;
+
+  recognition.onresult = (event) => {
+    // Handle speech recognition results
+    const transcript = Array.from(event.results)
+      .map((result) => result[0].transcript)
+      .join(" ");
+
+    // Update the searchInput state as you speak
+    setSearchInput(transcript);
+
+    // Clear the silence timer
+    clearTimeout(silenceTimer);
+
+    // Set a new silence timer
+    silenceTimer = setTimeout(() => {
+      recognition.stop();
+      // Automatically press the search button
+      handleSearch(searchInput);
+    }, 2000); // Stop listening after 3 seconds of silence
+  };
 
   const handleSearch = (input) => {
     axios
@@ -39,12 +66,17 @@ function Plot({ results }) {
     fetchMovieDetails(imdbIDs);
   }, [results]);
 
+  const startListening = () => {
+    recognition.start();
+  };
+
   return (
     <Container className="App">
       <Div>
         <Div d="flex" justify="center" w="auto" m={{ b: "1rem", t: "1rem" }}>
           <Input
             placeholder="Search"
+            value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyPress={(event) => {
               if (event.key === "Enter") {
@@ -55,6 +87,7 @@ function Plot({ results }) {
             w="40rem"
           />
           <Button onClick={() => handleSearch(searchInput)}>Search</Button>
+          <Button onClick={startListening}>Microphone</Button>
         </Div>
         {movieDetails.length > 0 && (
           <Row>
@@ -90,4 +123,4 @@ function Plot({ results }) {
   );
 }
 
-export default Plot;
+export default Mood;

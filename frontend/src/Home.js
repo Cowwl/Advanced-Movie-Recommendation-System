@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Div, Button, Input, Text, Image, Container, Row, Col } from "atomize";
 
-function Plot({ results }) {
+function Home({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); // Initialize the Web Speech API recognition object
@@ -123,4 +123,4 @@ function Plot({ results }) {
   );
 }
 
-export default Plot;
+export default Home;

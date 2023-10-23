@@ -3,6 +3,7 @@ import axios from "axios";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Plot from "./Plot";
 import Mood from "./Mood";
+import Home from "./Home";
 import { Div, Text, Button, Container, Row, Col } from "atomize";
 import "./App.css";
 
@@ -30,7 +31,7 @@ function App() {
             <Col size={4}>
               <Button
                 tag="a"
-                href="/"
+                href="/home"
                 textColor="white"
                 hoverTextColor="black"
                 bg="info700"
@@ -73,7 +74,7 @@ function App() {
         </Container>
 
         <Routes>
-          <Route path="/" element={<div>ok</div>} />
+          <Route path="/home" element={<Home results={state.results} />} />
           <Route path="/plot" element={<Plot results={state.results} />} />
           <Route path="/mood" element={<Mood results={state.results} />} />
         </Routes>
