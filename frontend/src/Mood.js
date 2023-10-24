@@ -6,7 +6,9 @@ import { BiMicrophone } from "react-icons/bi";
 function Mood({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)();
+  const [loading, setLoading] = useState(true);
 
   recognition.continuous = true;
   recognition.interimResults = true;
@@ -50,6 +52,7 @@ function Mood({ results }) {
         (response) => response.data
       );
       setMovieDetails(movieDetailsData);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching movie details:", error);
     }
@@ -112,7 +115,7 @@ function Mood({ results }) {
             <BiMicrophone />
           </Button>
         </Div>
-        {movieDetails.length > 0 && (
+        {movieDetails.length > 0 && !loading ? (
           <Row>
             {movieDetails.map((movie) => (
               <Col size={{ xs: 12, md: 6, lg: 4 }} key={movie.imdbID}>
@@ -151,6 +154,17 @@ function Mood({ results }) {
               </Col>
             ))}
           </Row>
+        ) : (
+          <Text
+            tag="h2"
+            textSize="title"
+            m={{ y: "0.5rem" }}
+            textColor="#f99e15"
+            fontFamily="Raleway"
+            textAlign="center"
+          >
+            Loading...
+          </Text>
         )}
       </Div>
     </Container>

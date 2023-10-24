@@ -122,6 +122,7 @@ function Plot() {
             m={{ y: "0.5rem" }}
             textColor="#f99e15"
             fontFamily="Raleway"
+            textAlign="center"
           >
             Loading...
           </Text>
