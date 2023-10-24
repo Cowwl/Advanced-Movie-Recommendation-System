@@ -77,6 +77,9 @@ df["cast_embeddings"] = list(vectorizer_cast.fit_transform(df["cast"]).toarray()
 vectorizer_title = TfidfVectorizer()
 df["title_embeddings"] = list(vectorizer_title.fit_transform(df["title"]).toarray())
 
+df_mystery = df[df["genres"].str.contains("Thriller", na=False)]
+top_10_mystery_movies = df_mystery.sample(10, random_state=42)
+user_history_data = top_10_mystery_movies[["title"]].dropna()
 
 # Function to recommend movies based on user history
 def recommend_movies(user_history):
@@ -138,11 +141,11 @@ user_history_data = [
     "Total Recall",
 ]
 
+top_10_recommendations = recommend_movies(user_history_data)
 
 # Endpoint to recommend movies based on user history
 @plot_app.get("/recommend-movies-plot")
 async def recommend_movies_endpoint():
-    top_10_recommendations = recommend_movies(user_history_data)
     top_10_recommendations = top_10_recommendations[
         ["title", "imdb_id", "overview", "similarity_score", "genres"]
     ]
