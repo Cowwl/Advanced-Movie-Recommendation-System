@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Div, Button, Input, Text, Image, Container, Row, Col } from "atomize";
 import { useEffect, useState } from "react";
+import { BiMicrophone } from "react-icons/bi";
 
 function Plot() {
   const [movieDetails, setMovieDetails] = useState([]);
@@ -112,7 +113,7 @@ function Plot() {
             textColor="white"
             fontFamily="Raleway"
           >
-            Voice
+            <BiMicrophone />
           </Button>
         </Div>
         {loading ? (

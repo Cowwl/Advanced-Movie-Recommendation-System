@@ -1,27 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Div, Button, Input, Text, Image, Container, Row, Col } from "atomize";
-import Lottie from "react-lottie";
-import animationData from "./assets/Animation - 1698143397742.json";
+import { BiMicrophone } from "react-icons/bi";
 
 function Home({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const [resultsLoaded, setResultsLoaded] = useState(false);
   const recognition = new (window.SpeechRecognition ||
     window.webkitSpeechRecognition)();
 
   recognition.continuous = true;
   recognition.interimResults = true;
   let silenceTimer = null;
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
 
   recognition.onresult = (event) => {
     const transcript = Array.from(event.results)
@@ -58,6 +49,7 @@ function Home({ results }) {
         );
         console.log(movieDetailsData);
         setMovieDetails(movieDetailsData);
+        setResultsLoaded(true);
       } else {
         setMovieDetails([]);
       }
@@ -112,8 +104,19 @@ function Home({ results }) {
             textColor="white"
             fontFamily="Raleway"
           >
-            Voice
+            <BiMicrophone />
           </Button>
+        </Div>
+        {/* Display the image div if resultsLoaded is false */}
+        <Div d="flex" justify="center" align="center">
+          {!resultsLoaded && (
+            <img
+              src="https://i.imgur.com/PwDWAMu.jpg"
+              alt="loading"
+              width="500"
+              height="500"
+            />
+          )}
         </Div>
         {movieDetails.length > 0 && (
           <Row>

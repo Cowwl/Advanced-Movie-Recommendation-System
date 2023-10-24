@@ -143,12 +143,12 @@ user_history_data = [
 
 top_10_recommendations = recommend_movies(user_history_data)
 
+top_10_recommendations = top_10_recommendations[
+    ["title", "imdb_id", "overview", "similarity_score", "genres"]
+]
 # Endpoint to recommend movies based on user history
 @plot_app.get("/recommend-movies-plot")
 async def recommend_movies_endpoint():
-    top_10_recommendations = top_10_recommendations[
-        ["title", "imdb_id", "overview", "similarity_score", "genres"]
-    ]
     movies = [movie for movie in top_10_recommendations.to_dict("records")]
     return JSONResponse(content=movies)
 

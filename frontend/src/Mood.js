@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Div, Button, Input, Text, Image, Container, Row, Col } from "atomize";
 import { useEffect, useState } from "react";
+import { BiMicrophone } from "react-icons/bi";
 
 function Mood({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
@@ -110,7 +111,7 @@ function Mood({ results }) {
             textColor="white"
             fontFamily="Raleway"
           >
-            Voice
+            <BiMicrophone />
           </Button>
         </Div>
         {movieDetails.length > 0 && (

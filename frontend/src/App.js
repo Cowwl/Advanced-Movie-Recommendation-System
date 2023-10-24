@@ -93,6 +93,7 @@ function App() {
           <Route path="/home" element={<Home results={state.results} />} />
           <Route path="/plot" element={<Plot results={state.results} />} />
           <Route path="/mood" element={<Mood results={state.results} />} />
+          <Route path="/*" element={<Home results={state.results} />} />
         </Routes>
       </Div>
     </Router>
