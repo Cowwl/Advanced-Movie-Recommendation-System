@@ -5,7 +5,8 @@ import { Div, Button, Input, Text, Image, Container, Row, Col } from "atomize";
 function Home({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); // Initialize the Web Speech API recognition object
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)(); // Initialize the Web Speech API recognition object
 
   // Initialize the recognition settings
   recognition.continuous = true;
@@ -73,9 +74,15 @@ function Home({ results }) {
   return (
     <Container className="App">
       <Div>
-        <Div d="flex" justify="center" w="auto" m={{ b: "1rem", t: "1rem" }}>
+        <Div
+          d="flex"
+          justify="center"
+          w="auto"
+          m={{ b: "1rem", t: "1rem" }}
+          align="center"
+        >
           <Input
-            placeholder="Search"
+            placeholder="Search for a movie by its name..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyPress={(event) => {
@@ -86,8 +93,17 @@ function Home({ results }) {
             m={{ r: "0.5rem" }}
             w="40rem"
           />
-          <Button onClick={() => handleSearch(searchInput)}>Search</Button>
-          <Button onClick={startListening}>Microphone</Button>
+          <Button
+            onClick={() => handleSearch(searchInput)}
+            m={{ r: "0.5rem" }}
+            bg="#e62360"
+            textColor="white"
+          >
+            Search
+          </Button>
+          <Button onClick={startListening} bg="#e62360" textColor="white">
+            Voice
+          </Button>
         </Div>
         {movieDetails.length > 0 && (
           <Row>

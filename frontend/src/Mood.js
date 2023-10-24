@@ -1,36 +1,31 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Div, Button, Input, Text, Image, Container, Row, Col } from "atomize";
+import { useEffect, useState } from "react";
 
 function Mood({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); // Initialize the Web Speech API recognition object
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)();
 
-  // Initialize the recognition settings
   recognition.continuous = true;
   recognition.interimResults = true;
 
   let silenceTimer = null;
 
   recognition.onresult = (event) => {
-    // Handle speech recognition results
     const transcript = Array.from(event.results)
       .map((result) => result[0].transcript)
       .join(" ");
 
-    // Update the searchInput state as you speak
     setSearchInput(transcript);
 
-    // Clear the silence timer
     clearTimeout(silenceTimer);
 
-    // Set a new silence timer
     silenceTimer = setTimeout(() => {
       recognition.stop();
-      // Automatically press the search button
       handleSearch(searchInput);
-    }, 2000); // Stop listening after 3 seconds of silence
+    }, 2000);
   };
 
   const handleSearch = (input) => {
@@ -62,9 +57,17 @@ function Mood({ results }) {
   };
 
   useEffect(() => {
-    const imdbIDs = results.map((result) => result.imdb_id);
-    fetchMovieDetails(imdbIDs);
-  }, [results]);
+    // Fetch recommendations when component mounts
+    axios
+      .get("http://localhost:8000/mood/recommendations")
+      .then((response) => {
+        const imdbIDs = response.data.map((movie) => movie.imdb_id);
+        fetchMovieDetails(imdbIDs);
+      })
+      .catch((error) => {
+        console.error("Error fetching recommendations:", error);
+      });
+  }, []);
 
   const startListening = () => {
     recognition.start();
@@ -73,9 +76,9 @@ function Mood({ results }) {
   return (
     <Container className="App">
       <Div>
-        <Div d="flex" justify="center" w="auto" m={{ b: "1rem", t: "1rem" }}>
+        <Div d="flex" justify="center" w="auto" m={{ b: "1rem", t: "1rem" }} align="center">
           <Input
-            placeholder="Search"
+            placeholder="Enter mood keywords or a sentence, e.g. 'sad', 'exciting', 'I want to watch a happy movie'"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyPress={(event) => {
@@ -86,8 +89,17 @@ function Mood({ results }) {
             m={{ r: "0.5rem" }}
             w="40rem"
           />
-          <Button onClick={() => handleSearch(searchInput)}>Search</Button>
-          <Button onClick={startListening}>Microphone</Button>
+          <Button
+            onClick={() => handleSearch(searchInput)}
+            m={{ r: "0.5rem" }}
+            bg="#e62360"
+            textColor="white"
+          >
+            Search
+          </Button>
+          <Button onClick={startListening} bg="#e62360" textColor="white">
+            Voice
+          </Button>
         </Div>
         {movieDetails.length > 0 && (
           <Row>
@@ -107,11 +119,16 @@ function Mood({ results }) {
                     w="100%"
                     rounded="md"
                   />
-                  <Text tag="h2" textSize="title" m={{ y: "0.5rem" }}>
+                  <Text
+                    tag="h2"
+                    textSize="title"
+                    m={{ y: "0.5rem" }}
+                    fontFamily="Raleway"
+                  >
                     {movie.Title}
                   </Text>
-                  <Text textSize="body" textWeight="500">
-                    Plot: {movie.Plot}
+                  <Text textSize="body" textWeight="500" fontFamily="Ubuntu" textColor="#2c3638">
+                    {movie.Plot}
                   </Text>
                 </Div>
               </Col>

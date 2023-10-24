@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Plot from "./Plot";
 import Mood from "./Mood";
 import Home from "./Home";
-import { Div, Text, Button, Container, Row, Col } from "atomize";
-import "./App.css";
+import { Div, Text, Button } from "atomize";
 
 function App() {
   const [state, setState] = useState({
@@ -18,61 +17,78 @@ function App() {
 
   return (
     <Router>
-      <Div bg="gray200" minH="100vh">
-        <Container>
-          <Row>
-            <Col>
-              <Text tag="h1" textSize="display2" m={{ y: "1rem" }} textAlign="center">
-                Movie Streamer
-              </Text>
-            </Col>
-          </Row>
-          <Row>
-            <Col size={4}>
-              <Button
-                tag="a"
-                href="/home"
-                textColor="white"
-                hoverTextColor="black"
-                bg="info700"
-                hoverBg="info300"
-                rounded="circle"
-                p={{ r: "1.5rem", l: "1.5rem" }}
-              >
-                Home
-              </Button>
-            </Col>
-            <Col size={4}>
-              <Button
-                tag="a"
-                href="/plot"
-                textColor="white"
-                hoverTextColor="black"
-                bg="info700"
-                hoverBg="info300"
-                rounded="circle"
-                p={{ r: "1.5rem", l: "1.5rem" }}
-              >
-                Plot
-              </Button>
-            </Col>
-            <Col size={4}>
-              <Button
-                tag="a"
-                href="/mood"
-                textColor="white"
-                hoverTextColor="black"
-                bg="info700"
-                hoverBg="info300"
-                rounded="circle"
-                p={{ r: "1.5rem", l: "1.5rem" }}
-              >
-                Mood
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-
+      <Div bg="#f9f2d0" minH="100vh" d="flex" flexDir="column" align="center">
+        <Div
+          bg="#e62360"
+          d="flex"
+          flexDir="row"
+          align="center"
+          justify="space-between"
+          w="100%"
+          p={{ x: "1rem" }}
+          h="6rem"
+          shadow="3"
+        >
+          <Div>
+            <Text
+              tag="h1"
+              textSize="display2"
+              m={{ x: "1rem", y: "1rem" }}
+              textAlign="center"
+              textColor="#f9f2d0"
+              fontFamily="Playpen Sans"
+            >
+              Movie Streamer
+            </Text>
+          </Div>
+          <Div d="flex" justify="space-around" align="center" w="20rem">
+            <Button
+              tag="a"
+              href="/home"
+              textColor="#f9f2d0"
+              textSize="subheader"
+              bg="#e62360"
+              hoverShadow="4"
+              border="1px solid"
+              borderColor="white"
+              fontFamily="Raleway"
+              rounded="circle"
+              p={{ r: "1.5rem", l: "1.5rem" }}
+            >
+              Home
+            </Button>
+            <Button
+              tag="a"
+              href="/plot"
+              textColor="#f9f2d0"
+              bg="#e62360"
+              textSize="subheader"
+              fontFamily="Raleway"
+              hoverShadow="4"
+              border="1px solid"
+              borderColor="white"
+              rounded="circle"
+              p={{ r: "1.5rem", l: "1.5rem" }}
+            >
+              Plot
+            </Button>
+            <Button
+              tag="a"
+              href="/mood"
+              textColor="#f9f2d0"
+              fontFamily="Raleway"
+              border="1px solid"
+              borderColor="white"
+              textSize="subheader"
+              hoverShadow="4"
+              bg="#e62360"
+              rounded="circle"
+              p={{ r: "1.5rem", l: "1.5rem" }}
+            >
+              Mood
+            </Button>
+          </Div>
+        </Div>
         <Routes>
           <Route path="/home" element={<Home results={state.results} />} />
           <Route path="/plot" element={<Plot results={state.results} />} />
