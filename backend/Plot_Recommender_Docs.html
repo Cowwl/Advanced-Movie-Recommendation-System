@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leak_Documentation</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="plot-based-recommendation-system-documentation">Plot-based Recommendation System Documentation</h1>
+<p>This documentation provides an overview of the code for a movie recommendation system based on plot similarity using FastAPI, SBERT (Sentence-BERT), and other data processing libraries.</p>
+<h2 id="code-structure">Code Structure</h2>
+<p>The code is structured into the following sections:</p>
+<ol>
+<li>
+<p>Import Statements:</p>
+<ul>
+<li>The code begins by importing essential Python libraries and modules.</li>
+</ul>
+</li>
+<li>
+<p>FastAPI Initialization:</p>
+<ul>
+<li>An instance of the FastAPI framework is created and named <code>plot_app</code>.</li>
+</ul>
+</li>
+<li>
+<p>SBERT Model Loading:</p>
+<ul>
+<li>The SentenceTransformer model (“all-mpnet-base-v2”) is loaded to generate SBERT embeddings for movie overviews.</li>
+</ul>
+</li>
+<li>
+<p>Data Processing Functions:</p>
+<ul>
+<li>A function to calculate SBERT embeddings from text, as well as a function to process lists of items, is defined.</li>
+</ul>
+</li>
+<li>
+<p>Movie Data Loading and Cleaning:</p>
+<ul>
+<li>Movie data is loaded from CSV files (“movies_metadata.csv” and “credits.csv”).</li>
+<li>Data is filtered, cleaned, and limited to the top 1000 most popular movies.</li>
+</ul>
+</li>
+<li>
+<p>Device Configuration:</p>
+<ul>
+<li>The code determines the computing device (CPU or CUDA) for SBERT model processing.</li>
+</ul>
+</li>
+<li>
+<p>Feature Extraction and Embeddings:</p>
+<ul>
+<li>Genres, overviews, countries, and cast information is processed.</li>
+<li>TF-IDF Vectorization is applied for genres, countries, and cast.</li>
+<li>SBERT embeddings are computed for movie overviews.</li>
+</ul>
+</li>
+<li>
+<p>Movie Recommendation Function:</p>
+<ul>
+<li>A function is defined to recommend movies based on user history (provided as a list of movie titles).</li>
+<li>Similarity scores are calculated using a combination of feature embeddings.</li>
+<li>The top 10 recommendations are selected.</li>
+</ul>
+</li>
+<li>
+<p>Sample User History Data:</p>
+<ul>
+<li>Sample user history data is provided as a list of movie titles.</li>
+</ul>
+</li>
+<li>
+<p>Recommending Movies Endpoint:</p>
+<ul>
+<li>An endpoint (<code>/recommend-movies-plot</code>) is created to recommend movies based on user history.</li>
+<li>The top 10 recommendations, including movie titles, IMDb IDs, overviews, similarities, and genres, are returned in JSON format.</li>
+</ul>
+</li>
+<li>
+<p>SBERT Embeddings Creation:</p>
+<ul>
+<li>SBERT embeddings for movie overviews are created as a tensor.</li>
+</ul>
+</li>
+<li>
+<p>Movie Search Function:</p>
+<ul>
+<li>A function is defined to search for movies based on plot similarity.</li>
+<li>The similarity scores between the user’s input and movie overviews are calculated.</li>
+<li>The top 10 search results are selected.</li>
+</ul>
+</li>
+<li>
+<p>Movie Search Endpoint:</p>
+<ul>
+<li>An endpoint (<code>/search-plot/</code>) is created to search for movies based on plot similarity.</li>
+<li>The user’s plot input is processed, and the top 10 search results are returned in JSON format, including movie titles, IMDb IDs, overviews, similarities, and genres.</li>
+</ul>
+</li>
+</ol>
+<h2 id="usage">Usage</h2>
+<ol>
+<li>
+<p><code>/recommend-movies-plot</code> Endpoint:</p>
+<ul>
+<li>Access this endpoint via a GET request to receive movie recommendations based on user history.</li>
+<li>The recommendations include movie titles, IMDb IDs, overviews, similarities, and genres.</li>
+</ul>
+</li>
+<li>
+<p><code>/search-plot/</code> Endpoint:</p>
+<ul>
+<li>Access this endpoint via a POST request, providing a plot input.</li>
+<li>The system performs a plot-based search and returns the top 10 search results, including movie titles, IMDb IDs, overviews, similarities, and genres.</li>
+</ul>
+</li>
+</ol>
+<h2 id="technical-details">Technical Details</h2>
+<ul>
+<li>The system utilizes SBERT embeddings to analyze movie overviews and recommend movies.</li>
+<li>Cosine similarity is used to measure similarity between movie features.</li>
+<li>A combination of features, including overviews, titles, locations, cast, and genres, is considered for recommendations.</li>
+</ul>
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>This code provides a foundation for a plot-based movie recommendation system. It can be expanded and improved with a larger dataset, user feedback, and additional user interaction features for a more sophisticated recommendation system.</p>
+</div>
+</body>
+
+</html>
