@@ -36,7 +36,7 @@ function App() {
               m={{ x: "1rem", y: "1rem" }}
               textAlign="center"
               textColor="#f9f2d0"
-              fontFamily="Playpen Sans"
+              fontFamily="Ubuntu"
             >
               Movie Streamer
             </Text>
