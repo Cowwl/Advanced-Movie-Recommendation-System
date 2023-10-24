@@ -100,17 +100,29 @@ function Plot() {
           <Button
             onClick={() => handleSearch(searchInput)}
             m={{ r: "0.5rem" }}
-            bg="#e62360"
+            bg="#b3623a"
             textColor="white"
+            fontFamily="Raleway"
           >
             Search
           </Button>
-          <Button onClick={startListening} bg="#e62360" textColor="white">
+          <Button
+            onClick={startListening}
+            bg="#b3623a"
+            textColor="white"
+            fontFamily="Raleway"
+          >
             Voice
           </Button>
         </Div>
         {loading ? (
-          <Text tag="h2" textSize="title" m={{ y: "0.5rem" }}>
+          <Text
+            tag="h2"
+            textSize="title"
+            m={{ y: "0.5rem" }}
+            textColor="#f99e15"
+            fontFamily="Raleway"
+          >
             Loading...
           </Text>
         ) : (
@@ -137,11 +149,17 @@ function Plot() {
                       textSize="title"
                       m={{ y: "0.5rem" }}
                       fontFamily="Raleway"
+                      textColor="#f99e15"
                     >
                       {movie.Title}
                     </Text>
-                    <Text textSize="body" textWeight="500" fontFamily="Ubuntu" textColor="#2c3638">
-                      Plot: {movie.Plot}
+                    <Text
+                      textSize="body"
+                      textWeight="500"
+                      fontFamily="Ubuntu"
+                      textColor="gray200"
+                    >
+                      {movie.Plot}
                     </Text>
                   </Div>
                 </Col>

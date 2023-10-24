@@ -17,9 +17,9 @@ function App() {
 
   return (
     <Router>
-      <Div bg="#f9f2d0" minH="100vh" d="flex" flexDir="column" align="center">
+      <Div bg="#07142d" minH="100vh" d="flex" flexDir="column" align="center">
         <Div
-          bg="#e62360"
+          bg="#f99e15"
           d="flex"
           flexDir="row"
           align="center"
@@ -35,7 +35,7 @@ function App() {
               textSize="display2"
               m={{ x: "1rem", y: "1rem" }}
               textAlign="center"
-              textColor="#f9f2d0"
+              textColor="#572f2e"
               fontFamily="Ubuntu"
             >
               Movie Streamer
@@ -47,7 +47,7 @@ function App() {
               href="/home"
               textColor="#f9f2d0"
               textSize="subheader"
-              bg="#e62360"
+              bg="#b3623a"
               hoverShadow="4"
               border="1px solid"
               borderColor="white"
@@ -61,7 +61,7 @@ function App() {
               tag="a"
               href="/plot"
               textColor="#f9f2d0"
-              bg="#e62360"
+              bg="#b3623a"
               textSize="subheader"
               fontFamily="Raleway"
               hoverShadow="4"
@@ -81,7 +81,7 @@ function App() {
               borderColor="white"
               textSize="subheader"
               hoverShadow="4"
-              bg="#e62360"
+              bg="#b3623a"
               rounded="circle"
               p={{ r: "1.5rem", l: "1.5rem" }}
             >

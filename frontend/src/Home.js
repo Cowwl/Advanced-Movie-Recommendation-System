@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Div, Button, Input, Text, Image, Container, Row, Col } from "atomize";
+import Lottie from "react-lottie";
+import animationData from "./assets/Animation - 1698143397742.json";
 
 function Home({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)();
 
   recognition.continuous = true;
   recognition.interimResults = true;
   let silenceTimer = null;
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   recognition.onresult = (event) => {
     const transcript = Array.from(event.results)
@@ -29,7 +41,9 @@ function Home({ results }) {
 
   const fetchMovieDetails = async (input) => {
     try {
-      const response = await axios.get(`https://www.omdbapi.com/?&s=${input}&apikey=5426c86e`);
+      const response = await axios.get(
+        `https://www.omdbapi.com/?&s=${input}&apikey=5426c86e`
+      );
       if (response.data.Search) {
         console.log(response.data.Search);
         // Get the imdbIDs from the search results and get the plot for each movie using the ?i= endpoint
@@ -51,8 +65,6 @@ function Home({ results }) {
       console.error("Error fetching movie details:", error);
     }
   };
-  
-  
 
   useEffect(() => {
     const imdbIDs = results.map((result) => result.imdb_id);
@@ -65,7 +77,7 @@ function Home({ results }) {
 
   return (
     <Container className="App">
-      <Div>
+      <Div d="flex" flexDir="column" align="center">
         <Div
           d="flex"
           justify="center"
@@ -88,12 +100,18 @@ function Home({ results }) {
           <Button
             onClick={() => handleSearch(searchInput)}
             m={{ r: "0.5rem" }}
-            bg="#e62360"
+            bg="#b3623a"
             textColor="white"
+            fontFamily="Raleway"
           >
             Search
           </Button>
-          <Button onClick={startListening} bg="#e62360" textColor="white">
+          <Button
+            onClick={startListening}
+            bg="#b3623a"
+            textColor="white"
+            fontFamily="Raleway"
+          >
             Voice
           </Button>
         </Div>
@@ -115,10 +133,21 @@ function Home({ results }) {
                     w="100%"
                     rounded="md"
                   />
-                  <Text tag="h2" textSize="title" m={{ y: "0.5rem" }} fontFamily="Raleway">
+                  <Text
+                    tag="h2"
+                    textSize="title"
+                    m={{ y: "0.5rem" }}
+                    fontFamily="Raleway"
+                    textColor="#f99e15"
+                  >
                     {movie.Title}
                   </Text>
-                  <Text textSize="body" textWeight="500" fontFamily="Ubuntu" textColor="#2c3638">
+                  <Text
+                    textSize="body"
+                    textWeight="500"
+                    fontFamily="Ubuntu"
+                    textColor="gray200"
+                  >
                     {movie.Plot}
                   </Text>
                 </Div>
