@@ -7,7 +7,8 @@ function Plot() {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)();
 
   recognition.continuous = true;
   recognition.interimResults = true;

@@ -7,7 +7,8 @@ function Home({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [resultsLoaded, setResultsLoaded] = useState(false);
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)();
 
   recognition.continuous = true;
   recognition.interimResults = true;
