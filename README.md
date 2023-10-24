@@ -1,7 +1,5 @@
 # Advanced Movie Recommendation System
 
-![Hackverlords](https://your-image-link-here)
-
 This project is the submission for Amazon HackOn Season 3 by Team Hackverlords from BITS Pilani, Hyderabad Campus. Our project is an Advanced Movie Recommendation System that leverages machine learning and user-generated content for personalized movie recommendations.
 
 ## Prototype Video
