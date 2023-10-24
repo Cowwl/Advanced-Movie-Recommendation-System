@@ -7,8 +7,7 @@ function Plot() {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
-  const recognition = new (window.SpeechRecognition ||
-    window.webkitSpeechRecognition)();
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
   recognition.continuous = true;
   recognition.interimResults = true;
@@ -26,13 +25,12 @@ function Plot() {
 
     silenceTimer = setTimeout(() => {
       recognition.stop();
-      handleSearch(searchInput);
     }, 2000);
   };
 
-  const handleSearch = (input) => {
+  const handleSearch = () => {
     axios
-      .post("http://localhost:8000/plot/search-plot?user_input=" + input)
+      .post("http://localhost:8000/plot/search-plot?user_input=" + searchInput)
       .then((response) => {
         const imdbIDs = response.data.map((movie) => movie.imdb_id);
         fetchMovieDetails(imdbIDs);
@@ -60,7 +58,7 @@ function Plot() {
   };
 
   useEffect(() => {
-    // Fetch recommendations when component mounts
+    // Fetch recommendations when the component mounts
     axios
       .get("http://localhost:8000/plot/recommend-movies-plot")
       .then((response) => {
@@ -92,14 +90,15 @@ function Plot() {
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyPress={(event) => {
               if (event.key === "Enter") {
-                handleSearch(searchInput);
+                // Handle the search when Enter key is pressed
+                handleSearch();
               }
             }}
             m={{ r: "0.5rem" }}
             w="40rem"
           />
           <Button
-            onClick={() => handleSearch(searchInput)}
+            onClick={handleSearch} // Trigger search when the button is clicked
             m={{ r: "0.5rem" }}
             bg="#b3623a"
             textColor="white"

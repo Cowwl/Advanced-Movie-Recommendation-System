@@ -7,8 +7,7 @@ function Home({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [resultsLoaded, setResultsLoaded] = useState(false);
-  const recognition = new (window.SpeechRecognition ||
-    window.webkitSpeechRecognition)();
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
   recognition.continuous = true;
   recognition.interimResults = true;
@@ -22,12 +21,11 @@ function Home({ results }) {
     clearTimeout(silenceTimer);
     silenceTimer = setTimeout(() => {
       recognition.stop();
-      handleSearch(searchInput);
     }, 2000);
   };
 
-  const handleSearch = (input) => {
-    fetchMovieDetails(input);
+  const handleSearch = () => {
+    fetchMovieDetails(searchInput);
   };
 
   const fetchMovieDetails = async (input) => {
@@ -83,14 +81,14 @@ function Home({ results }) {
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyPress={(event) => {
               if (event.key === "Enter") {
-                handleSearch(searchInput);
+                handleSearch();
               }
             }}
             m={{ r: "0.5rem" }}
             w="40rem"
           />
           <Button
-            onClick={() => handleSearch(searchInput)}
+            onClick={handleSearch}
             m={{ r: "0.5rem" }}
             bg="#b3623a"
             textColor="white"
