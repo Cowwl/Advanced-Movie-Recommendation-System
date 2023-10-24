@@ -12,3 +12,5 @@
 **API used for Thumbnails and Movie details:** [OMDb API](https://www.omdbapi.com/)
 
 **Link to the custom scraped reviews dataset:** [Custom Reviews Dataset](https://drive.google.com/file/d/1MQyYZtUyaRqvlSL8zRt33fxzuPJ9AtXv/view?usp=sharing)
+
+**Documentation:** You can find the documentation for the recommendation system in the /backend folder.
