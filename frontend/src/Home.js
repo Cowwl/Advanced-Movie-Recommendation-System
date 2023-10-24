@@ -5,62 +5,54 @@ import { Div, Button, Input, Text, Image, Container, Row, Col } from "atomize";
 function Home({ results }) {
   const [movieDetails, setMovieDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const recognition = new (window.SpeechRecognition ||
-    window.webkitSpeechRecognition)(); // Initialize the Web Speech API recognition object
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
-  // Initialize the recognition settings
   recognition.continuous = true;
   recognition.interimResults = true;
-
   let silenceTimer = null;
 
   recognition.onresult = (event) => {
-    // Handle speech recognition results
     const transcript = Array.from(event.results)
       .map((result) => result[0].transcript)
       .join(" ");
-
-    // Update the searchInput state as you speak
     setSearchInput(transcript);
-
-    // Clear the silence timer
     clearTimeout(silenceTimer);
-
-    // Set a new silence timer
     silenceTimer = setTimeout(() => {
       recognition.stop();
-      // Automatically press the search button
       handleSearch(searchInput);
-    }, 2000); // Stop listening after 3 seconds of silence
+    }, 2000);
   };
 
   const handleSearch = (input) => {
-    axios
-      .post("http://localhost:8000/plot/search-plot?user_input=" + input)
-      .then((response) => {
-        const imdbIDs = response.data.map((movie) => movie.imdb_id);
-        fetchMovieDetails(imdbIDs);
-      })
-      .catch((error) => {
-        console.error("Error fetching search results:", error);
-      });
+    fetchMovieDetails(input);
   };
 
-  const fetchMovieDetails = async (imdbIDs) => {
+  const fetchMovieDetails = async (input) => {
     try {
-      const movieDetailsPromises = imdbIDs.map((id) => {
-        return axios.get(`https://www.omdbapi.com/?i=${id}&apikey=5426c86e`);
-      });
-
-      const movieDetailsResponses = await Promise.all(movieDetailsPromises);
-      const movieDetailsData = movieDetailsResponses.map(
-        (response) => response.data
-      );
-      setMovieDetails(movieDetailsData);
+      const response = await axios.get(`https://www.omdbapi.com/?&s=${input}&apikey=5426c86e`);
+      if (response.data.Search) {
+        console.log(response.data.Search);
+        // Get the imdbIDs from the search results and get the plot for each movie using the ?i= endpoint
+        const imdbIDs = response.data.Search.map((movie) => movie.imdbID);
+        // console.log(imdbIDs);
+        const movieDetailsPromises = imdbIDs.map((id) => {
+          return axios.get(`https://www.omdbapi.com/?i=${id}&apikey=5426c86e`);
+        });
+        const movieDetailsResponses = await Promise.all(movieDetailsPromises);
+        const movieDetailsData = movieDetailsResponses.map(
+          (response) => response.data
+        );
+        console.log(movieDetailsData);
+        setMovieDetails(movieDetailsData);
+      } else {
+        setMovieDetails([]);
+      }
     } catch (error) {
       console.error("Error fetching movie details:", error);
     }
   };
+  
+  
 
   useEffect(() => {
     const imdbIDs = results.map((result) => result.imdb_id);
@@ -123,11 +115,11 @@ function Home({ results }) {
                     w="100%"
                     rounded="md"
                   />
-                  <Text tag="h2" textSize="title" m={{ y: "0.5rem" }}>
+                  <Text tag="h2" textSize="title" m={{ y: "0.5rem" }} fontFamily="Raleway">
                     {movie.Title}
                   </Text>
-                  <Text textSize="body" textWeight="500">
-                    Plot: {movie.Plot}
+                  <Text textSize="body" textWeight="500" fontFamily="Ubuntu" textColor="#2c3638">
+                    {movie.Plot}
                   </Text>
                 </Div>
               </Col>
